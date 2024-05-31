@@ -18,17 +18,19 @@ export default class NewBill {
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    const filePath = e.target.value.split(/\\/g)
-    const fileName = filePath[filePath.length-1]
+    const fileName = file.name
     const filePathSplit = fileName.split(".")
+    // Test file extension
     const fileExtension = filePathSplit[filePathSplit.length-1]
+    //Array containing the right extensions
     const arrayExtensions = ["jpg", "jpeg", "png"]
+    //Verification of the existence of the file and if the extension is included in the array
     if (file && arrayExtensions.includes(fileExtension)) {
       const formData = new FormData()
       const email = JSON.parse(localStorage.getItem("user")).email
       formData.append('file', file)
       formData.append('email', email)
-
+      
       this.store
         .bills()
         .create({
